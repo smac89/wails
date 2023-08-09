@@ -41,9 +41,10 @@ Screen GetNThMonitor(int monitor_num, GtkWindow *window){
 */
 import "C"
 import (
+	"sync"
+
 	"github.com/pkg/errors"
 	"github.com/wailsapp/wails/v2/internal/frontend"
-	"sync"
 )
 
 type Screen = frontend.Screen
@@ -59,11 +60,19 @@ func GetAllScreens(window *C.GtkWindow) ([]Screen, error) {
 		numMonitors := C.GetNMonitors(window)
 		for i := 0; i < int(numMonitors); i++ {
 			cMonitor := C.GetNThMonitor(C.int(i), window)
+			size := frontend.ScreenSize{
+				Width:  int(cMonitor.width),
+				Height: int(cMonitor.height),
+			}
+
 			screen := Screen{
 				IsCurrent: cMonitor.isCurrent == 1,
 				IsPrimary: cMonitor.isPrimary == 1,
 				Width:     int(cMonitor.width),
 				Height:    int(cMonitor.height),
+
+				Size:         size, // TODO: Calculate Size, check if we need to do Unscaling.
+				PhysicalSize: size,
 			}
 			screens = append(screens, screen)
 		}

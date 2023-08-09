@@ -54,8 +54,9 @@ Screen GetNthScreen(int nth, void *inctx){
 */
 import "C"
 import (
-	"github.com/wailsapp/wails/v2/internal/frontend"
 	"unsafe"
+
+	"github.com/wailsapp/wails/v2/internal/frontend"
 )
 
 func GetAllScreens(wailsContext unsafe.Pointer) ([]frontend.Screen, error) {
@@ -65,11 +66,19 @@ func GetAllScreens(wailsContext unsafe.Pointer) ([]frontend.Screen, error) {
 	for screeNum := 0; screeNum < numScreens; screeNum++ {
 		screenNumC := C.int(screeNum)
 		cScreen := C.GetNthScreen(screenNumC, wailsContext)
+		size := frontend.ScreenSize{
+			Height: int(cScreen.height),
+			Width:  int(cScreen.width),
+		}
+
 		screen := frontend.Screen{
 			Height:    int(cScreen.height),
 			Width:     int(cScreen.width),
 			IsCurrent: cScreen.isCurrent == C.int(1),
 			IsPrimary: cScreen.isPrimary == C.int(1),
+
+			Size:         size,
+			PhysicalSize: size, // For macOS Size and PhysicalSize are identical
 		}
 		screens = append(screens, screen)
 	}
