@@ -182,11 +182,11 @@ func (d *AssetServer) processIndexHTML(indexHTML []byte) ([]byte, error) {
 		}
 	}
 
-	if err := insertScriptInHead(htmlNode, runtimeJSPath); err != nil {
+	if err := insertScriptInHead(htmlNode, ipcJSPath); err != nil {
 		return nil, err
 	}
 
-	if err := insertScriptInHead(htmlNode, ipcJSPath); err != nil {
+	if err := insertScriptInHead(htmlNode, runtimeJSPath); err != nil {
 		return nil, err
 	}
 
