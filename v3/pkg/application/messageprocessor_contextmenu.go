@@ -11,7 +11,7 @@ type ContextMenuData struct {
 	Data any    `json:"data"`
 }
 
-func (m *MessageProcessor) processContextMenuMethod(method string, rw http.ResponseWriter, _ *http.Request, window *WebviewWindow, params QueryParams) {
+func (m *MessageProcessor) processContextMenuMethod(method string, rw http.ResponseWriter, _ *http.Request, window Window, params QueryParams) {
 
 	switch method {
 	case "OpenContextMenu":
@@ -21,7 +21,7 @@ func (m *MessageProcessor) processContextMenuMethod(method string, rw http.Respo
 			m.httpError(rw, "error parsing contextmenu message: %s", err.Error())
 			return
 		}
-		window.openContextMenu(&data)
+		window.OpenContextMenu(&data)
 		m.ok(rw)
 	default:
 		m.httpError(rw, "Unknown contextmenu method: %s", method)

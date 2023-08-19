@@ -7,24 +7,23 @@ import (
 	"strconv"
 )
 
-func (m *MessageProcessor) callErrorCallback(window *WebviewWindow, message string, callID *string, err error) {
+func (m *MessageProcessor) callErrorCallback(window Window, message string, callID *string, err error) {
 	errorMsg := fmt.Sprintf(message, err)
 	m.Error(errorMsg)
-	msg := "_wails.callErrorCallback('" + *callID + "', " + strconv.Quote(errorMsg) + ");"
-	window.ExecJS(msg)
+	window.CallError(*callID, errorMsg)
 }
 
-func (m *MessageProcessor) callCallback(window *WebviewWindow, callID *string, result string, isJSON bool) {
-	msg := fmt.Sprintf("_wails.callCallback('%s', %s, %v);", *callID, strconv.Quote(result), isJSON)
-	window.ExecJS(msg)
+func (m *MessageProcessor) callCallback(window Window, callID *string, result string, isJSON bool) {
+	window.CallResponse(*callID, result)
 }
 
-func (m *MessageProcessor) processCallMethod(method string, rw http.ResponseWriter, r *http.Request, window *WebviewWindow, params QueryParams) {
+func (m *MessageProcessor) processCallMethod(method string, rw http.ResponseWriter, r *http.Request, window Window, params QueryParams) {
 	args, err := params.Args()
 	if err != nil {
 		m.httpError(rw, "Unable to parse arguments: %s", err)
 		return
 	}
+	fmt.Println("processCallMethod", args)
 	callID := args.String("call-id")
 	if callID == nil {
 		m.Error("call-id is required")
@@ -44,6 +43,7 @@ func (m *MessageProcessor) processCallMethod(method string, rw http.ResponseWrit
 			m.callErrorCallback(window, "Error parsing method id for call: %s", callID, err)
 			return
 		}
+		fmt.Println("BoundMethod ID=", id)
 		if id != 0 {
 			boundMethod = globalApplication.bindings.GetByID(uint32(id))
 		} else {

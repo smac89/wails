@@ -4,7 +4,7 @@ import (
 	"net/http"
 )
 
-func (m *MessageProcessor) processApplicationMethod(method string, rw http.ResponseWriter, r *http.Request, window *WebviewWindow, params QueryParams) {
+func (m *MessageProcessor) processApplicationMethod(method string, rw http.ResponseWriter, r *http.Request, _ Window, params QueryParams) {
 
 	switch method {
 	case "Quit":

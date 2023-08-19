@@ -2,10 +2,11 @@ package application
 
 import (
 	"fmt"
-	"github.com/wailsapp/wails/v3/internal/hash"
 	"reflect"
 	"runtime"
 	"strings"
+
+	"github.com/wailsapp/wails/v3/internal/hash"
 
 	"github.com/samber/lo"
 )
@@ -147,6 +148,7 @@ func (b *Bindings) AddPlugins(plugins map[string]Plugin) error {
 				b.boundMethods[packageName][structName] = make(map[string]*BoundMethod)
 			}
 			b.boundMethods[packageName][structName][methodName] = method
+			b.boundByID[method.ID] = method
 			globalApplication.info("Added plugin method: "+structName+"."+methodName, "id", method.ID)
 		}
 	}

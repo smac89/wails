@@ -4,7 +4,7 @@ import (
 	"net/http"
 )
 
-func (m *MessageProcessor) processScreensMethod(method string, rw http.ResponseWriter, _ *http.Request, _ *WebviewWindow, _ QueryParams) {
+func (m *MessageProcessor) processScreensMethod(method string, rw http.ResponseWriter, _ *http.Request, _ Window, _ QueryParams) {
 
 	switch method {
 	case "GetAll":

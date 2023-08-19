@@ -2,10 +2,11 @@ package application
 
 import (
 	"fmt"
-	"github.com/wailsapp/wails/v3/pkg/events"
 	"runtime"
 	"sync"
 	"time"
+
+	"github.com/wailsapp/wails/v3/pkg/events"
 )
 
 type IconPosition int
@@ -92,7 +93,7 @@ func (s *SystemTray) Label() string {
 	return s.label
 }
 
-func (s *SystemTray) run() {
+func (s *SystemTray) Run() {
 	s.impl = newSystemTrayImpl(s)
 
 	if s.attachedWindow.Window != nil {

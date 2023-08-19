@@ -4,7 +4,7 @@ import (
 	"net/http"
 )
 
-func (m *MessageProcessor) processWindowMethod(method string, rw http.ResponseWriter, _ *http.Request, window *WebviewWindow, params QueryParams) {
+func (m *MessageProcessor) processWindowMethod(method string, rw http.ResponseWriter, _ *http.Request, window Window, params QueryParams) {
 
 	args, err := params.Args()
 	if err != nil {

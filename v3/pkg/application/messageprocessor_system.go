@@ -4,7 +4,7 @@ import (
 	"net/http"
 )
 
-func (m *MessageProcessor) processSystemMethod(method string, rw http.ResponseWriter, r *http.Request, window *WebviewWindow, params QueryParams) {
+func (m *MessageProcessor) processSystemMethod(method string, rw http.ResponseWriter, r *http.Request, window Window, params QueryParams) {
 
 	switch method {
 	case "IsDarkMode":
